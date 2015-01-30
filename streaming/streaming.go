@@ -1,4 +1,4 @@
-package streamming
+package streaming
 
 import (
 	"net/url"
