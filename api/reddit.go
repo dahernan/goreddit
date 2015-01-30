@@ -86,9 +86,9 @@ func (r *Reddit) Listing(page string, subreddit string, params url.Values) ([]It
 		return nil, err
 	}
 
-	redditUrl := fmt.Sprintf("%s/%s.json", page, baseUrl)
+	redditUrl := fmt.Sprintf("%s/%s.json", baseUrl, page)
 	if subreddit != "" {
-		redditUrl = fmt.Sprintf("%s/r/%s/new.json", baseUrl, subreddit)
+		redditUrl = fmt.Sprintf("%s/r/%s/%s.json", baseUrl, subreddit, page)
 	}
 
 	u, err := url.Parse(redditUrl)
