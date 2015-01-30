@@ -1,0 +1,23 @@
+
+<div class="row">
+{{range .}}
+
+
+
+{{with .Data}}
+  <div class="media">
+    <a class="media-left media-middle" href="{{.URL}}">
+      <img src="{{ .Thumbnail }}" alt="">
+    </a>
+    <div class="media-body">
+      <h4 class="media-heading"><a class="media-left media-middle" href="{{.URL}}">{{.Title}}</a></h4>
+      <a href="http://www.facebook.com/sharer.php?u={{.URL}}" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
+      <a href="http://twitter.com/share?text={{.Title}}&url={{.URL}}" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>    
+      {{.Title}}
+    </div>
+  </div>
+{{end}}
+
+{{end}}
+
+</div>
