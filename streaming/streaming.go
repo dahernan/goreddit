@@ -1,29 +1,70 @@
 package streaming
 
 import (
+	"fmt"
 	"net/url"
+	"time"
+
+	"golang.org/x/net/context"
 
 	"github.com/dahernan/goreddit/api"
 )
 
 type RedditStreamer interface {
-	Stream(redditFunc RedditListingFunc) chan api.Item
+	Stream() chan api.Item
 }
 
-func (r *RedditStreamer) Stream(redditFunc RedditListingFunc) chan api.Item {
+type RedditStream struct {
+	redditFunc api.RedditListingFunc
+	subreddit  string
+	params     url.Values
+	stream     chan api.Item
+	cancelFunc context.CancelFunc
+}
 
-	stream := make(chan api.Item)
+func NewRedditStream(redditFunc api.RedditListingFunc, subreddit string, params url.Values) *RedditStream {
 
-	v := url.Values{}
-	v.Set("limit", "20")
+	stream := make(chan api.Item, 100)
 
-	go func() {
-		items, err := redditFunc("trailers", v)
-		for item := range items {
-			stream <- item
+	rs := &RedditStream{
+		redditFunc: redditFunc,
+		subreddit:  subreddit,
+		params:     params,
+		stream:     stream,
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	rs.cancelFunc = cancel
+	go rs.run(ctx)
+
+	return rs
+}
+
+func (r *RedditStream) Stream() chan api.Item {
+	return r.stream
+}
+
+func (r *RedditStream) run(ctx context.Context) {
+	for {
+		select {
+		case <-time.After(5 * time.Second):
+			fmt.Println("Fetching items ...")
+			r.fetchItems()
+
+		case <-ctx.Done():
+			fmt.Println("Done Run!!")
+			return
 		}
-	}()
+	}
+}
 
-	return stream
+func (r *RedditStream) fetchItems() {
+	items, _ := r.redditFunc(r.subreddit, r.params)
+
+	fmt.Println("Sending items!!", len(items))
+
+	for i, item := range items {
+		fmt.Println("Sending item-", i)
+		r.stream <- item
+	}
 
 }

@@ -29,7 +29,6 @@ func init() {
 }
 
 func Index(w http.ResponseWriter, req *http.Request) {
-
 	reddit := api.NewReddit(client, "go reddit test", consumerKey, secretKey)
 
 	v := url.Values{}
@@ -66,6 +65,7 @@ func NewHttpClientWithTimeout(timeout time.Duration) *http.Client {
 	transport := http.Transport{
 		Dial: dialTimeout,
 	}
+
 	client := http.Client{
 		Transport: &transport,
 	}
