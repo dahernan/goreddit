@@ -10,6 +10,7 @@ import (
 	"github.com/dahernan/goreddit/api"
 )
 
+// no very meanfull test, just experimenting
 func TestBasicStreamming(t *testing.T) {
 
 	consumerKey := os.Getenv("CONSUMER_KEY")
@@ -18,13 +19,15 @@ func TestBasicStreamming(t *testing.T) {
 	reddit := api.NewReddit(&http.Client{}, "go reddit test", consumerKey, secretKey)
 
 	v := url.Values{}
-	v.Set("limit", "20")
+	v.Set("limit", "5")
 	stream := NewRedditStream(reddit.Hot, "trailers", v)
 
 	items := stream.Stream()
 
+	i := 0
 	for it := range items {
-		fmt.Println("NEW:::: ", it)
+		i++
+		fmt.Println("New Item: ", i, it)
 	}
 
 }
