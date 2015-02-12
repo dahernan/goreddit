@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HTML5 Server Side Event Example in Go</title>
+</head>
+<body>
+
+	Yo {{.}}, here are some facinating messages about the
+	current time:<br>
+
+	<script type="text/javascript">
+
+	    // Create a new HTML5 EventSource
+	    var source = new EventSource('/events');
+
+	    // Create a callback for when a new message is received.
+	    source.onmessage = function(e) {
+	    	var data = JSON.parse(e.data);
+  			console.log(data);
+
+	        // Append the `data` attribute of the message to the DOM.
+	        document.body.innerHTML += data + '<br>';
+	    };
+	</script>
+</body>
+</html>

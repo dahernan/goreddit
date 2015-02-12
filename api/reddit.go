@@ -40,6 +40,7 @@ type ItemData struct {
 	URL       string
 	Domain    string
 	Thumbnail string
+	Video     string
 }
 
 type RedditListing interface {
@@ -122,6 +123,29 @@ func (r *Reddit) Listing(page string, subreddit string, params url.Values) ([]It
 	redditResponse := Response{}
 	dec.Decode(&redditResponse)
 
-	return redditResponse.Data.Children, nil
+	filtered := filter(redditResponse.Data.Children)
+
+	return filtered, nil
+
+}
+
+func filter(items []Item) []Item {
+	filtered := make([]Item, 0, len(items))
+	for _, it := range items {
+		if strings.HasPrefix(it.Data.Domain, "youtu") {
+
+			link, err := url.Parse(it.Data.URL)
+			if err == nil {
+				it.Data.Video = link.Query().Get("v")
+				if it.Data.Video == "" {
+					it.Data.Video = strings.Replace(link.Path, "/", "", -1)
+				}
+			}
+
+			filtered = append(filtered, it)
+		}
+	}
+
+	return filtered
 
 }

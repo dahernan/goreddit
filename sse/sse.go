@@ -76,11 +76,13 @@ func (b *Broker) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		case <-notify:
 			b.deleteClient <- messageChan
 			log.Println("SSE HTTP connection closed")
+			f.Flush()
 			return
 
 		// message recieved
 		case msg := <-messageChan:
-			fmt.Fprintf(w, "data: Message: %s\n\n", msg)
+			fmt.Fprintf(w, "data: %s\n\n", msg)
+			log.Printf("data: %s\n\n", msg)
 			f.Flush()
 		}
 	}

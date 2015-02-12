@@ -12,6 +12,7 @@ import (
 
 type RedditStreamer interface {
 	Stream() chan api.Item
+	Items() []api.Item
 }
 
 type RedditStream struct {
@@ -30,7 +31,7 @@ type RedditStream struct {
 
 	// channels to copy the items
 	itemsChan    chan struct{}
-	itemsOutChan []api.Item
+	itemsOutChan chan []api.Item
 }
 
 func NewRedditStream(redditFunc api.RedditListingFunc, subreddit string, params url.Values) *RedditStream {
@@ -51,7 +52,7 @@ func NewRedditStream(redditFunc api.RedditListingFunc, subreddit string, params 
 
 	// channels to copy items
 	rs.itemsChan = make(chan struct{})
-	rs.itemsOutChan = make([]api.Item)
+	rs.itemsOutChan = make(chan []api.Item)
 
 	// Start the event loop
 	go rs.run(ctx)
@@ -108,10 +109,10 @@ func (r *RedditStream) Items() []api.Item {
 
 func (r *RedditStream) doItems() []api.Item {
 	size := len(r.items)
-	items := make([]api.Items, size, size)
+	items := make([]api.Item, size, size)
 	if size == 0 {
 		return items
 	}
 	copy(items, r.items)
-	return items, nil
+	return items
 }
