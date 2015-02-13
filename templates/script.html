@@ -50,21 +50,22 @@
     });
   };
 
-  var source = new EventSource('/events');
-  source.onmessage = function(e) {
-    var data = JSON.parse(e.data);
-
-    var txt = tmpl("item_tmpl", data.Data);
-    console.log(txt);
-
-    $(txt).prependTo( ".playlist" );
-    $(".playlist").children().last().remove();
-    updateLinks();
-    //.fadeIn()
-
-  };
-
   $( document ).ready(function() {
+
+    var source = new EventSource('/events');
+    source.onmessage = function(e) {
+      var data = JSON.parse(e.data);
+
+      var txt = tmpl("item_tmpl", data.Data);
+      console.log(txt);
+
+      $(txt).prependTo( ".playlist" );
+      $(".playlist").children().last().remove();
+      updateLinks();
+      //.fadeIn()
+
+    };
+  
     updateLinks();    
   });
 
