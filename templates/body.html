@@ -41,13 +41,13 @@
   <div class="col-md-4 playlist">
     {{range .Items}}
       {{with .Data}}
-        <div class="media" id="{{.Id}}" data-video="{{.Video}}">
-          <a class="media-left media-middle" href="{{.URL}}">
-            <img src="{{ .Thumbnail }}" alt="" onclick="loadVideo('{{.Video}}', '{{.Title}}');return false;">
+        <div class="media" id="{{.Id}}">
+          <a class="video-link media-left media-middle" href="{{.URL}}" data-video="{{.Video}}" data-title="{{.Title}}">
+            <img src="{{ .Thumbnail }}">
           </a>
         
           <div class="media-body">
-            <h5 class="media-heading"><a class="media-left media-middle" href="{{.URL}}" onclick="loadVideo('{{.Video}}', '{{.Title}}');return false;">{{.Title}}</a></h4>  
+            <h5 class="media-heading"><a class="video-link media-left media-middle" href="{{.URL}}" data-video="{{.Video}}" data-title="{{.Title}}">{{.Title}}</a></h4>  
             <script>  
             </script>
           </div>
@@ -57,72 +57,16 @@
   </div>
 </div>
 
-<script type="text/javascript">
-    // Simple JavaScript Templating
-    // John Resig - http://ejohn.org/ - MIT Licensed
-    (function(){
-      var cache = {};
-     
-      this.tmpl = function tmpl(str, data){
-        // Figure out if we're getting a template, or if we need to
-        // load the template - and be sure to cache the result.
-        var fn = !/\W/.test(str) ?
-          cache[str] = cache[str] ||
-            tmpl(document.getElementById(str).innerHTML) :
-         
-          // Generate a reusable function that will serve as a template
-          // generator (and which will be cached).
-          new Function("obj",
-            "var p=[],print=function(){p.push.apply(p,arguments);};" +
-           
-            // Introduce the data as local variables using with(){}
-            "with(obj){p.push('" +
-           
-            // Convert the template into pure JavaScript
-            str
-              .replace(/[\r\t\n]/g, " ")
-              .split("<%").join("\t")
-              .replace(/((^|%>)[^\t]*)'/g, "$1\r")
-              .replace(/\t=(.*?)%>/g, "',$1,'")
-              .split("\t").join("');")
-              .split("%>").join("p.push('")
-              .split("\r").join("\\'")
-          + "');}return p.join('');");
-       
-        // Provide some basic currying to the user
-        return data ? fn( data ) : fn;
-      };
-    })();  
-</script>
-
-
-  
-
 <script type="text/html" id="item_tmpl">
   <div class="media" id="<%=Id%>" data-video="<%=Video%>">
-          <a class="media-left media-middle" href="<%=URL%>">
-            <img src="<%=Thumbnail%>" onclick="loadVideo(\"<%=Video%>\", \"<%=Title%>\");return false;">
+          <a class="video-link media-left media-middle" href="<%=URL%>" data-video="<%=Video%>" data-title="<%=Title%>">
+            <img src="<%=Thumbnail%>">
           </a>
         
           <div class="media-body">
-            <h5 class="media-heading"><a class="media-left media-middle" href="<%=URL%>" onclick="loadVideo(\"<%=Video%>\", \"<%=Title%>\");return false;"><%=Title%></a></h4>  
+            <h5 class="media-heading"><a class="video-link media-left media-middle" href="<%=URL%>" data-video="<%=Video%>" data-title="<%=Title%>"><%=Title%></a></h4>  
             <script>  
             </script>
           </div>
   </div>  
-</script>
-
-
-<script type="text/javascript">
-  var source = new EventSource('/events');
-  source.onmessage = function(e) {
-    var data = JSON.parse(e.data);
-
-    var txt = tmpl("item_tmpl", data.Data);
-    console.log(txt);
-
-    $(txt).prependTo( ".playlist" );
-
-  };
-
 </script>
