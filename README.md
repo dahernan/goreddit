@@ -1,7 +1,7 @@
 What is this?
 -------------
 
-Cleverbaboon TV is a experiment using Reddit API to pull videos.
+[Cleverbaboon TV](http://www.cleverbaboontv.com/) is a experiment using Reddit API to pull videos.
 Streaming new videos to the UI, using SSE (Server Side Events)
 
 Why?
