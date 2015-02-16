@@ -56,6 +56,12 @@
     source.onmessage = function(e) {
       var data = JSON.parse(e.data);
 
+      var emptyResponse = (typeof data.Data == 'undefined');
+      if (emptyResponse){
+        console.log("Heartbeat!!");
+        return;
+      }
+
       var txt = tmpl("item_tmpl", data.Data);
       console.log(txt);
 

@@ -86,15 +86,23 @@ func Stream(reddit api.RedditListing) streaming.RedditStreamer {
 func StreamingBroker(broker *sse.Broker) {
 
 	items := stream.Stream()
-	for it := range items {
 
-		data, err := ItemToJson(it)
-		if err != nil {
-			log.Println("Error marshal item:", it, err)
+	for {
+		select {
+		case it := <-items:
+			data, err := ItemToJson(it)
+			if err != nil {
+				log.Println("Error marshal item:", it, err)
+			}
+
+			broker.Send(data)
+			fmt.Println("New Item: ", data)
+
+		// heroku proxy timesout if the connection does not have activity
+		// so send something to prevent it
+		case <-time.After(3 * time.Second):
+			broker.Send("{}")
 		}
-
-		broker.Send(data)
-		fmt.Println("New Item: ", data)
 	}
 
 }
