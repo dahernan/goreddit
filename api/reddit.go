@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -107,7 +106,6 @@ func (r *Reddit) Listing(page string, subreddit string, params url.Values) ([]It
 
 	resp, err := r.client.Do(req)
 
-	log.Println(req)
 	if err != nil {
 		return nil, err
 	}

@@ -9,8 +9,7 @@
             
             <div id="player" class="youtube-player">        
             </div>
-            <script>
-              
+            <script>              
               var tag = document.createElement('script');
 
               tag.src = "https://www.youtube.com/iframe_api";
@@ -27,10 +26,7 @@
               function loadVideo(id, title) {
                 $('#current-title').text(title);
                 player.loadVideoById({'videoId': id,'suggestedQuality': 'large'});
-
               }  
-
-              // player.loadVideoById({'videoId': 'bHQqvYy5KYo','suggestedQuality': 'large'});        
             </script>            
           </div>
         </div>
@@ -58,7 +54,7 @@
 </div>
 
 <script type="text/html" id="item_tmpl">
-  <div class="media" id="<%=Id%>" data-video="<%=Video%>">
+  <div class="media fade" id="<%=Id%>" data-video="<%=Video%>">
           <a class="video-link media-left media-middle" href="<%=URL%>" data-video="<%=Video%>" data-title="<%=Title%>">
             <img src="<%=Thumbnail%>">
           </a>

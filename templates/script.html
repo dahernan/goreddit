@@ -62,7 +62,8 @@
       $(txt).prependTo( ".playlist" );
       $(".playlist").children().last().remove();
       updateLinks();
-      //.fadeIn()
+
+      $("#" + data.Data.Id).addClass("in");
 
     };
   

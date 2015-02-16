@@ -24,6 +24,8 @@ var (
 	stream      streaming.RedditStreamer
 	consumerKey string
 	secretKey   string
+	port        string
+	agent       string
 )
 
 func init() {
@@ -35,8 +37,10 @@ func init() {
 
 	consumerKey = os.Getenv("CONSUMER_KEY")
 	secretKey = os.Getenv("SECRET_KEY")
+	port = os.Getenv("PORT")
+	agent = os.Getenv("AGENT")
 
-	reddit := api.NewReddit(client, "go reddit test", consumerKey, secretKey)
+	reddit := api.NewReddit(client, agent, consumerKey, secretKey)
 	stream = Stream(reddit)
 
 }
@@ -57,24 +61,16 @@ func Index(w http.ResponseWriter, req *http.Request) {
 
 }
 
-func Event(w http.ResponseWriter, req *http.Request) {
-	r.HTML(w, http.StatusOK, "event", nil)
-}
-
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/index.html", Index)
-	mux.HandleFunc("/test", Event)
+	mux.HandleFunc("/", Index)
 
 	broker := sse.NewBroker()
 	mux.Handle("/events", broker)
 
-	//mux.Handle("/", http.FileServer(http.Dir("public")))
-
 	go StreamingBroker(broker)
-
-	http.ListenAndServe(":3000", mux)
+	http.ListenAndServe(":"+port, mux)
 
 }
 
