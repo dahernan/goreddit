@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -96,11 +95,11 @@ func StreamingBroker(broker *sse.Broker) {
 			}
 
 			broker.Send(data)
-			fmt.Println("New Item: ", data)
+			//fmt.Println("New Item: ", data)
 
 		// heroku proxy timesout if the connection does not have activity
 		// so send something to prevent it
-		case <-time.After(3 * time.Second):
+		case <-time.After(5 * time.Second):
 			broker.Send("{}")
 		}
 	}

@@ -71,7 +71,7 @@ func (r *RedditStream) Cancel() {
 func (r *RedditStream) run(ctx context.Context) {
 	for {
 		select {
-		case <-time.After(5 * time.Second):
+		case <-time.After(3 * time.Second):
 			r.fetchItems()
 
 		case <-r.itemsChan:

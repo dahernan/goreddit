@@ -43,7 +43,7 @@ func (b *Broker) run() {
 			for keyChan, _ := range b.clients {
 				keyChan <- msg
 			}
-			log.Println("Broadcast SSE msg to", len(b.clients))
+			//log.Println("Broadcast SSE msg to", len(b.clients))
 		}
 	}
 }
