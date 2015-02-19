@@ -1,4 +1,4 @@
-// Server Side Events
+// Server Sent Events
 package sse
 
 import (
