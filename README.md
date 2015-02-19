@@ -2,7 +2,7 @@ What is this?
 -------------
 
 [Cleverbaboon TV](http://www.cleverbaboontv.com/) is a experiment using Reddit API to pull videos.
-Streaming new videos to the UI, using SSE (Server Side Events)
+Streaming new videos to the UI, using SSE (Server Sent Events)
 
 Why?
 -------------
@@ -14,5 +14,5 @@ Reusable parts
 * api/reddit - Implements listing using Reddit Rest API
 * oauth - Implements Application-only OAuth https://github.com/reddit/reddit/wiki/OAuth2
 * streaming - Transform a polling API, to a streaming API based in Go channels
-* sse - Minimal implementation of a http broker for Server Side Events
+* sse - Minimal implementation of a http broker for Server Sent Events
 
